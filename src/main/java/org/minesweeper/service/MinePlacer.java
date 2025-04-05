@@ -17,7 +17,7 @@ public class MinePlacer {
                 col = rand.nextInt(difficulty.getCols());
                 if (!board[row][col].isMine()) {
                     board[row][col].setMine();
-                    System.out.println("Placing mine at: " + row + ", " + col);
+                    System.out.println("Placing mine at: " + row + ", " + col + " Mine #" + (i+1)); //DEBUG
                     break;
                 }
             }
