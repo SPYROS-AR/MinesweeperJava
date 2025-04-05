@@ -1,17 +1,17 @@
 package org.minesweeper.model;
 
 public class CellPosition {
-    private final short row;
-    private final short column;
+    private final int row;
+    private final int column;
 
-    public CellPosition(short row, short column) {
+    public CellPosition(int row, int column) {
         this.row = row;
         this.column = column;
     }
-    public short getRow() {
+    public int getRow() {
         return row;
     }
-    public short getColumn() {
+    public int getColumn() {
         return column;
     }
 
