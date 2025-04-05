@@ -43,4 +43,16 @@ public class Board {
             System.out.println();
         }
     }
+    public void printBoard() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (board[i][j].isMine()) {
+                    System.out.print("M ");
+                } else {
+                    System.out.print(". ");
+                }
+            }
+            System.out.println();
+        }
+    }
 }
