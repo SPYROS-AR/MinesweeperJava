@@ -14,6 +14,7 @@ public enum Difficulty {
         this.cols = cols;
         this.mines = mines;
     }
+
     public int getRows(){return rows;}
     public int getCols(){return cols;}
     public int getMines(){return mines;}

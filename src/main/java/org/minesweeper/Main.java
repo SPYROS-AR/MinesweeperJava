@@ -1,14 +1,17 @@
 package org.minesweeper;
 
 
-import org.minesweeper.service.GameLogic;
+import org.minesweeper.gui.MainFrame;
 
-import static org.minesweeper.util.Difficulty.*;
+
+import javax.swing.*;
+
 
 public class Main {
     public static void main(String[] args){
-        GameLogic gameLogic = new GameLogic();
-        gameLogic.startGame(EASY);
+        SwingUtilities.invokeLater(() -> {
+            MainFrame mainFrame = new MainFrame();
+        });
     }
 
 }
