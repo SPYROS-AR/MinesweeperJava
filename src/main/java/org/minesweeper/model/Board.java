@@ -37,7 +37,7 @@ public class Board {
                 if (board[i][j].isMine()) {
                     System.out.print("M ");
                 } else if (board[i][j].isRevealed()) {
-                    System.out.print(board[i][j].getAdjacentMines() + " ");
+                    System.out.print(board[i][j].getAdjacentMinesNumber() + " ");
                 } else if (board[i][j].isFlagged()) {
                     System.out.print("F ");
                 }
@@ -56,6 +56,9 @@ public class Board {
 
     public Cell[][] getBoard() {
         return board;
+    }
+    public Cell getCell(CellPosition cellPosition) {
+        return board[cellPosition.getRow()][cellPosition.getColumn()];
     }
     public int getRows() {
         return rows;

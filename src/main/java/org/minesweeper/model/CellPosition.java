@@ -15,4 +15,5 @@ public class CellPosition {
         return column;
     }
 
+
 }

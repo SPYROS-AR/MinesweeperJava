@@ -7,13 +7,15 @@ public class Cell {
     private boolean isMine;
     private boolean isRevealed;
     private boolean isFlagged;
-    private final Set<CellPosition> adjacentCellsWithMinesPositions;
+    private int adjacentMinesCount;
     private final Set<CellPosition> adjacentCellsPositions;
+    private final Set<CellPosition> adjacentCellswithoutMines;
     private final CellPosition position;
 
     public Cell(CellPosition position) {
-        this.adjacentCellsWithMinesPositions = new HashSet<>();
+        this.adjacentMinesCount = 0;
         this.adjacentCellsPositions = new HashSet<>();
+        this.adjacentCellswithoutMines = new HashSet<>();
         this.position = position;
         this.isRevealed = false;
         this.isFlagged = false;
@@ -47,22 +49,20 @@ public class Cell {
     public CellPosition getPosition() {
         return position;
     }
-
-    public Set<CellPosition> getAdjacentMinesPositions() {
-        return adjacentCellsWithMinesPositions;
-    }
-    public int getAdjacentMines() {
-        return adjacentCellsWithMinesPositions.size();
-    }
     public Set<CellPosition> getAdjacentCellsPositions() {
         return adjacentCellsPositions;
     }
+    public Set<CellPosition> getAdjacentCellswithoutMines() {
+        return adjacentCellswithoutMines;
+    }
 
     public int getAdjacentMinesNumber() {
-        return adjacentCellsWithMinesPositions.size();
+        return adjacentMinesCount;
     }
 
     public void checkAdjacentCells(Cell[][] board, int rows, int cols) {
+        adjacentMinesCount = 0;
+        adjacentCellsPositions.clear();
         int[] dx = {-1, -1, -1, 0, 0, 1, 1, 1};
         int[] dy = {-1, 0, 1, -1, 1, -1, 0, 1};
         for (int d = 0; d < 8; d++) {
@@ -72,7 +72,9 @@ public class Cell {
                 Cell adjacentCell = board[newX][newY];
                 adjacentCellsPositions.add(adjacentCell.getPosition());
                 if (adjacentCell.isMine()) {
-                    adjacentCellsWithMinesPositions.add(adjacentCell.getPosition());
+                    adjacentMinesCount++;
+                } else {
+                    adjacentCellswithoutMines.add(adjacentCell.getPosition());
                 }
             }
         }
