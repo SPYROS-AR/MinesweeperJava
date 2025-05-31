@@ -4,8 +4,6 @@ import org.minesweeper.service.GameLogic;
 import org.minesweeper.service.MinePlacer;
 import org.minesweeper.util.Difficulty;
 
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class GameState {
     private Board board;
@@ -13,7 +11,7 @@ public class GameState {
     private boolean isGameOver;
     private boolean isGameWon;
     private boolean isFirstMove;
-    private int remainingMines;
+
 
     public GameState(GameLogic gameLogic) {
         this.gameLogic = gameLogic;
@@ -23,16 +21,9 @@ public class GameState {
 
     public void initializeGame(Difficulty difficulty) {
         board = new Board(difficulty);
-        remainingMines = difficulty.getMines();
     }
 
-    private void updateRemainingMines() {
-        remainingMines--;
-    }
 
-    public int getRemainingMines() {
-        return remainingMines;
-    }
 
     public Board getBoard() {
         return board;
@@ -46,6 +37,8 @@ public class GameState {
                 MinePlacer.moveMine(board, cellPosition);
             } else {
                 isGameOver = true;
+                cell.setRevealed(true);
+                getGameStatus();
                 return cell; // Game over
             }
         }
@@ -53,7 +46,28 @@ public class GameState {
             isFirstMove = false;
         }
         floodReveal(cellPosition);
+        getGameStatus();
         return cell;
+    }
+    public int getGameStatus(){
+        if (isGameOver){
+            return -1; // Game over
+        }
+        int revealedCells = 0;
+        int totalCells = board.getRows() * board.getColumns();
+        for (int i = 0; i < board.getRows(); i++) {
+            for (int j = 0; j < board.getColumns(); j++) {
+                Cell cell = board.getBoard()[i][j];
+                if (cell.isRevealed() && !cell.isMine()) {
+                    revealedCells++;
+                }
+            }
+        }
+        if (revealedCells == totalCells - board.getTotalMines()) {
+            isGameWon = true;
+            return 1; // Game won
+        }
+        return 0; // Game still ongoing
     }
 
     private void floodReveal(CellPosition position) {
@@ -71,54 +85,12 @@ public class GameState {
         }
     }
 
-    public void flood(CellPosition position) {
-
-        Queue<CellPosition> queue = new LinkedList<>();
-        queue.add(position);
-        while (!queue.isEmpty()) {
-            System.out.println("inside flood");
-            // Get the next cell position from the queue
-            CellPosition currentPosition = queue.poll();
-            Cell currentCell = board.getBoard()[currentPosition.getRow()][currentPosition.getColumn()];
-            // Skip if the cell is already revealed
-            if (currentCell.isRevealed()) {
-                continue;
-            }
-            // Reveal the current cell
-            if (!currentCell.isFlagged()) {
-                currentCell.setRevealed(true);
-            }
-            System.out.println("Flooding to: " + currentPosition.getRow() + ", " + currentPosition.getColumn());
-            currentCell.checkAdjacentCells(board.getBoard(), board.getRows(), board.getColumns());
-            // If the current cell has no adjacent mines, add its adjacent cells to the queue
-            if (currentCell.getAdjacentMinesNumber() == 0) {
-                for (CellPosition adjacent : currentCell.getAdjacentCellswithoutMines()) {
-                    // Check if the adjacent cell has not been revealed yet
-                    Cell adjacentCell = board.getBoard()[adjacent.getRow()][adjacent.getColumn()];
-                    if (!adjacentCell.isRevealed() && !adjacentCell.isFlagged()) {
-                        queue.add(adjacent); // Add adjacent cell to the queue
-                    }
-                }
-            }
-        }
-    }
-
     public Cell flagCell(CellPosition cellPosition) {
         Cell cell = board.getBoard()[cellPosition.getRow()][cellPosition.getColumn()];
         if (!cell.isRevealed()) {
             cell.setFlagged(!cell.isFlagged());
-            if (cell.isFlagged()) {
-                updateRemainingMines();
-                updateGameStatus();
-            }
         }
         return cell;
-    }
-
-    private void updateGameStatus() {
-        if (remainingMines == 0) {
-            isGameWon = true;
-        }
     }
 
     public boolean isGameWon() {

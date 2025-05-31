@@ -21,6 +21,7 @@ public class DifficultyButton extends JButton {
         setVisible(true);
         setButton();
     }
+
     private void setButton() {
         switch (difficulty) {
             case EASY:

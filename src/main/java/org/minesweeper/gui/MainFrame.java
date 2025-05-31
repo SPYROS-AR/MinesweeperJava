@@ -17,30 +17,32 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setResizable(true);
         initComponents();
-//        startGame(difficulty);
         setVisible(true);
     }
 
     private void initComponents() {
         SwingUtilities.invokeLater(() -> {
+            getContentPane().removeAll();
             DifficultyChooser chooser = new DifficultyChooser(this);
             add(chooser);
+            revalidate();
+            repaint();
         });
     }
 
     public void startGame(Difficulty difficulty) {
-        updatePane(difficulty);
-    }
-    private void restartGame() {
-        updatePane(difficulty);
-    }
-    private void updatePane(Difficulty difficulty) {
         this.difficulty = difficulty;
         GameLogic gameLogic = new GameLogic();
         gameLogic.startGame(difficulty);
         getContentPane().removeAll();
-        getContentPane().add(new BoardGUI(gameLogic.getGameState().getBoard(), gameLogic), "Center");
+        getContentPane().add(new BoardGUI(gameLogic.getGameState().getBoard(), gameLogic, this), "Center");
+        getContentPane().add(new ButtonPanel(this), "South");
         repaint();
         revalidate();
     }
+
+    public void restartGame() {
+        initComponents();
+    }
+
 }

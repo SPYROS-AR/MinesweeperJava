@@ -23,10 +23,11 @@ public class Board {
     private void initializeBoard() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                board[i][j] = new Cell(new CellPosition( i, j));
+                board[i][j] = new Cell(new CellPosition(i, j));
             }
         }
     }
+
     private void placeMinesOnBoard(Difficulty difficulty) {
         MinePlacer.placeMines(this, difficulty);
     }
@@ -40,14 +41,14 @@ public class Board {
                     System.out.print(board[i][j].getAdjacentMinesNumber() + " ");
                 } else if (board[i][j].isFlagged()) {
                     System.out.print("F ");
-                }
-                else {
+                } else {
                     System.out.print(". ");
                 }
             }
             System.out.println();
         }
     }
+
     public Cell revealCell(CellPosition cellPosition) {
         Cell cell = board[cellPosition.getRow()][cellPosition.getColumn()];
         cell.setRevealed(true);
@@ -57,13 +58,20 @@ public class Board {
     public Cell[][] getBoard() {
         return board;
     }
+
     public Cell getCell(CellPosition cellPosition) {
         return board[cellPosition.getRow()][cellPosition.getColumn()];
     }
+
     public int getRows() {
         return rows;
     }
+
     public int getColumns() {
         return columns;
+    }
+
+    public int getTotalMines() {
+        return totalMines;
     }
 }

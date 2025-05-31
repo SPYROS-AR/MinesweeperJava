@@ -12,7 +12,7 @@ public class MinePlacer {
     public static void placeMines(Board board, Difficulty difficulty) {
         for (int i = 0; i < difficulty.getMines(); i++) {
             placeMine(board.getBoard(), difficulty.getRows(), difficulty.getCols());
-            System.out.println("Mine # " + i ); //DEBUG
+            System.out.println("Mine # " + i); //DEBUG
         }
     }
 
@@ -32,7 +32,7 @@ public class MinePlacer {
             col = rand.nextInt(cols);
             if (!board[row][col].isMine()) {
                 board[row][col].setMine(true);
-                System.out.println("Placing mine at: " + row + ", " + col ); //DEBUG
+                System.out.println("Placing mine at: " + row + ", " + col); //DEBUG
                 break;
             }
         }

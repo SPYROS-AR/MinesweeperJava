@@ -46,12 +46,15 @@ public class Cell {
     public boolean isFlagged() {
         return isFlagged;
     }
+
     public CellPosition getPosition() {
         return position;
     }
+
     public Set<CellPosition> getAdjacentCellsPositions() {
         return adjacentCellsPositions;
     }
+
     public Set<CellPosition> getAdjacentCellswithoutMines() {
         return adjacentCellswithoutMines;
     }
